@@ -1,0 +1,18 @@
+# Development Profile - Local PostgreSQL
+# Copy this file to application-dev.properties and fill in your values
+
+# Database (your local PostgreSQL)
+spring.datasource.url=jdbc:postgresql://localhost:5432/yoga_path
+spring.datasource.username=YOUR_USERNAME
+spring.datasource.password=YOUR_PASSWORD
+
+# JPA / Hibernate (relaxed settings for development)
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# Actuator (show full details in dev)
+management.endpoint.health.show-details=always
+
+# JWT Configuration (use a long random string for secret)
+jwt.secret=YOUR_SECRET_KEY_AT_LEAST_256_BITS_LONG_FOR_HS256
+jwt.expiration=86400000

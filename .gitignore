@@ -23,5 +23,21 @@
 hs_err_pid*
 replay_pid*
 
+# OS files
 .DS_Store
+
+# IDE files
 .idea/
+*.iml
+.vscode/
+
+# Maven build output
+target/
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Dev properties (contains local secrets)
+src/main/resources/application-dev.properties
