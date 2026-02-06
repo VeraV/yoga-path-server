@@ -3,6 +3,7 @@ package com.yogapath.controller;
 import com.yogapath.dto.YogaProfileRequest;
 import com.yogapath.dto.YogaProfileResponse;
 import com.yogapath.service.YogaProfileService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class YogaProfileController {
     }
 
     @PostMapping
-    public ResponseEntity<YogaProfileResponse> createProfile(@RequestBody YogaProfileRequest request) {
+    public ResponseEntity<YogaProfileResponse> createProfile(@Valid @RequestBody YogaProfileRequest request) {
         YogaProfileResponse response = profileService.createProfile(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -34,7 +35,7 @@ public class YogaProfileController {
     }
 
     @PutMapping("/{id}")
-    public YogaProfileResponse updateProfile(@PathVariable Long id, @RequestBody YogaProfileRequest request) {
+    public YogaProfileResponse updateProfile(@PathVariable Long id, @Valid @RequestBody YogaProfileRequest request) {
         return profileService.updateProfile(id, request);
     }
 }

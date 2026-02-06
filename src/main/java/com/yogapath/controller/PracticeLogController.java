@@ -3,6 +3,7 @@ package com.yogapath.controller;
 import com.yogapath.dto.PracticeLogRequest;
 import com.yogapath.dto.PracticeLogResponse;
 import com.yogapath.service.PracticeLogService;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class PracticeLogController {
     }
 
     @PostMapping
-    public ResponseEntity<PracticeLogResponse> createPracticeLog(@RequestBody PracticeLogRequest request) {
+    public ResponseEntity<PracticeLogResponse> createPracticeLog(@Valid @RequestBody PracticeLogRequest request) {
         PracticeLogResponse response = practiceLogService.createPracticeLog(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -46,7 +47,7 @@ public class PracticeLogController {
     }
 
     @PutMapping("/{id}")
-    public PracticeLogResponse updatePracticeLog(@PathVariable Long id, @RequestBody PracticeLogRequest request) {
+    public PracticeLogResponse updatePracticeLog(@PathVariable Long id, @Valid @RequestBody PracticeLogRequest request) {
         return practiceLogService.updatePracticeLog(id, request);
     }
 
