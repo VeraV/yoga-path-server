@@ -1,73 +1,33 @@
-package com.yogapath.model;
+package com.yogapath.dto;
 
+import com.yogapath.model.Goal;
 import com.yogapath.model.enums.DynamicPreference;
 import com.yogapath.model.enums.PhilosophyOpenness;
 import com.yogapath.model.enums.StructurePreference;
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-@Entity
-@Table(name = "yoga_profiles")
-public class YogaProfile {
+public class YogaProfileResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
-
-    @Column(nullable = false)
+    private Long userId;
     private Integer weeklyMinutesAvailable;
-
-    @Column(nullable = false)
     private Integer sessionsPerWeek;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private DynamicPreference dynamicPreference = DynamicPreference.NO_PREFERENCE;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StructurePreference structurePreference = StructurePreference.NO_PREFERENCE;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PhilosophyOpenness philosophyOpenness = PhilosophyOpenness.NO_PREFERENCE;
-
-    @ManyToMany
-    @JoinTable(
-        name = "profile_goals",
-        joinColumns = @JoinColumn(name = "profile_id"),
-        inverseJoinColumns = @JoinColumn(name = "goal_id")
-    )
-    private Set<Goal> goals = new HashSet<>();
-
-    @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<YogaRecommendation> recommendations = new ArrayList<>();
-
-    @CreationTimestamp
-    @Column(updatable = false)
+    private DynamicPreference dynamicPreference;
+    private StructurePreference structurePreference;
+    private PhilosophyOpenness philosophyOpenness;
+    private Set<Goal> goals;
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    public YogaProfile() {}
+    public YogaProfileResponse() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public Integer getWeeklyMinutesAvailable() { return weeklyMinutesAvailable; }
     public void setWeeklyMinutesAvailable(Integer weeklyMinutesAvailable) { this.weeklyMinutesAvailable = weeklyMinutesAvailable; }
@@ -86,9 +46,6 @@ public class YogaProfile {
 
     public Set<Goal> getGoals() { return goals; }
     public void setGoals(Set<Goal> goals) { this.goals = goals; }
-
-    public List<YogaRecommendation> getRecommendations() { return recommendations; }
-    public void setRecommendations(List<YogaRecommendation> recommendations) { this.recommendations = recommendations; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

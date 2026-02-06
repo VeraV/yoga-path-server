@@ -1,62 +1,31 @@
-package com.yogapath.model;
+package com.yogapath.dto;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import com.yogapath.model.YogaStyle;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "yoga_recommendations")
-public class YogaRecommendation {
+public class YogaRecommendationResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", nullable = false)
-    private YogaProfile profile;
-
-    @Column(nullable = false)
+    private Long profileId;
     private Integer asanaMinutes;
-
-    @Column(nullable = false)
     private Integer pranayamaMinutes;
-
-    @Column(nullable = false)
     private Integer meditationMinutes;
-
-    @Column(nullable = false)
     private Integer relaxationMinutes;
-
-    @Column(nullable = false)
     private Integer mantraMinutes;
-
-    @ManyToMany
-    @JoinTable(
-        name = "recommendation_styles",
-        joinColumns = @JoinColumn(name = "recommendation_id"),
-        inverseJoinColumns = @JoinColumn(name = "style_id")
-    )
-    private Set<YogaStyle> styles = new HashSet<>();
-
-    @CreationTimestamp
-    @Column(updatable = false)
+    private Integer totalMinutesPerSession;
+    private Set<YogaStyle> styles;
+    private Boolean isOutdated;
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
-    public YogaRecommendation() {}
+    public YogaRecommendationResponse() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public YogaProfile getProfile() { return profile; }
-    public void setProfile(YogaProfile profile) { this.profile = profile; }
+    public Long getProfileId() { return profileId; }
+    public void setProfileId(Long profileId) { this.profileId = profileId; }
 
     public Integer getAsanaMinutes() { return asanaMinutes; }
     public void setAsanaMinutes(Integer asanaMinutes) { this.asanaMinutes = asanaMinutes; }
@@ -73,12 +42,15 @@ public class YogaRecommendation {
     public Integer getMantraMinutes() { return mantraMinutes; }
     public void setMantraMinutes(Integer mantraMinutes) { this.mantraMinutes = mantraMinutes; }
 
+    public Integer getTotalMinutesPerSession() { return totalMinutesPerSession; }
+    public void setTotalMinutesPerSession(Integer totalMinutesPerSession) { this.totalMinutesPerSession = totalMinutesPerSession; }
+
     public Set<YogaStyle> getStyles() { return styles; }
     public void setStyles(Set<YogaStyle> styles) { this.styles = styles; }
 
+    public Boolean getIsOutdated() { return isOutdated; }
+    public void setIsOutdated(Boolean isOutdated) { this.isOutdated = isOutdated; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

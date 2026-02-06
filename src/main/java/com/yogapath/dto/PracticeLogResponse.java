@@ -1,43 +1,24 @@
-package com.yogapath.model;
-
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
+package com.yogapath.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "practice_logs")
-public class PracticeLog {
+public class PracticeLogResponse {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(nullable = false)
+    private Long userId;
     private LocalDate practiceDate;
-
-    @Column(nullable = false)
     private Integer minutesPracticed;
-
-    @Column(columnDefinition = "TEXT")
     private String notes;
-
-    @CreationTimestamp
-    @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    public PracticeLog() {}
+    public PracticeLogResponse() {}
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
     public LocalDate getPracticeDate() { return practiceDate; }
     public void setPracticeDate(LocalDate practiceDate) { this.practiceDate = practiceDate; }
