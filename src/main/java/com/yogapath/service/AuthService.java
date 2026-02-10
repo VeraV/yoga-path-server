@@ -63,4 +63,17 @@ public class AuthService {
 
         return new LoginResponse(token, user.getId(), user.getEmail(), user.getName());
     }
+
+    public UserResponse getCurrentUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return new UserResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getEnabled(),
+                user.getCreatedAt()
+        );
+    }
 }

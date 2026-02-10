@@ -43,7 +43,7 @@ public class SecurityConfig {
             // Define which endpoints are public vs protected
             .authorizeHttpRequests(auth -> auth
                 // Public endpoints - no authentication required
-                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/goals").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/yoga-styles").permitAll()
