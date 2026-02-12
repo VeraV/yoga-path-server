@@ -44,7 +44,9 @@ public class YogaProfileService {
         profile.setStructurePreference(request.getStructurePreference());
         profile.setPhilosophyOpenness(request.getPhilosophyOpenness());
 
-        Set<Goal> goals = new HashSet<>(goalRepository.findAllById(request.getGoalIds()));
+        Set<Goal> goals = (request.getGoalIds() != null && !request.getGoalIds().isEmpty())
+                ? new HashSet<>(goalRepository.findAllById(request.getGoalIds()))
+                : new HashSet<>();
         profile.setGoals(goals);
 
         YogaProfile saved = profileRepository.save(profile);
@@ -73,7 +75,9 @@ public class YogaProfileService {
         profile.setStructurePreference(request.getStructurePreference());
         profile.setPhilosophyOpenness(request.getPhilosophyOpenness());
 
-        Set<Goal> goals = new HashSet<>(goalRepository.findAllById(request.getGoalIds()));
+        Set<Goal> goals = (request.getGoalIds() != null && !request.getGoalIds().isEmpty())
+                ? new HashSet<>(goalRepository.findAllById(request.getGoalIds()))
+                : new HashSet<>();
         profile.setGoals(goals);
 
         // updatedAt is automatically set by @UpdateTimestamp

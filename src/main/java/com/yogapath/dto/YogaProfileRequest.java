@@ -5,7 +5,6 @@ import com.yogapath.model.enums.PhilosophyOpenness;
 import com.yogapath.model.enums.StructurePreference;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
@@ -34,7 +33,6 @@ public class YogaProfileRequest {
     @NotNull(message = "Philosophy openness is required")
     private PhilosophyOpenness philosophyOpenness;
 
-    @NotEmpty(message = "At least one goal must be selected")
     private Set<Long> goalIds;
 
     public YogaProfileRequest() {}
