@@ -16,6 +16,7 @@ public class YogaRecommendationResponse {
     private Integer mantraMinutes;
     private Integer totalMinutesPerSession;
     private Set<YogaStyle> styles;
+    private String notes;
     private Boolean isOutdated;
     private LocalDateTime createdAt;
 
@@ -47,6 +48,9 @@ public class YogaRecommendationResponse {
 
     public Set<YogaStyle> getStyles() { return styles; }
     public void setStyles(Set<YogaStyle> styles) { this.styles = styles; }
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
     public Boolean getIsOutdated() { return isOutdated; }
     public void setIsOutdated(Boolean isOutdated) { this.isOutdated = isOutdated; }

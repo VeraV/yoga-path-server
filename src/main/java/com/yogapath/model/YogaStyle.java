@@ -18,6 +18,22 @@ public class YogaStyle {
     @Column(columnDefinition = "TEXT")
     private String notes;
 
+    // Style characteristics for matching with user preferences
+    @Column(name = "is_structured")
+    private boolean structured;
+
+    @Column(name = "is_creative")
+    private boolean creative;
+
+    @Column(name = "is_dynamic")
+    private boolean dynamic;
+
+    @Column(name = "is_static")
+    private boolean statik;  // "static" is a reserved word in Java
+
+    @Column(name = "requires_philosophy_openness")
+    private boolean requiresPhilosophyOpenness;
+
     public YogaStyle() {}
 
     public YogaStyle(Long id, String name, String description, String notes) {
@@ -38,4 +54,21 @@ public class YogaStyle {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+
+    public boolean isStructured() { return structured; }
+    public void setStructured(boolean structured) { this.structured = structured; }
+
+    public boolean isCreative() { return creative; }
+    public void setCreative(boolean creative) { this.creative = creative; }
+
+    public boolean isDynamic() { return dynamic; }
+    public void setDynamic(boolean dynamic) { this.dynamic = dynamic; }
+
+    public boolean isStatik() { return statik; }
+    public void setStatik(boolean statik) { this.statik = statik; }
+
+    public boolean isRequiresPhilosophyOpenness() { return requiresPhilosophyOpenness; }
+    public void setRequiresPhilosophyOpenness(boolean requiresPhilosophyOpenness) {
+        this.requiresPhilosophyOpenness = requiresPhilosophyOpenness;
+    }
 }

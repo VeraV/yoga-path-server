@@ -43,6 +43,9 @@ public class YogaRecommendation {
     )
     private Set<YogaStyle> styles = new HashSet<>();
 
+    @Column(columnDefinition = "TEXT")
+    private String notes;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
@@ -75,6 +78,9 @@ public class YogaRecommendation {
 
     public Set<YogaStyle> getStyles() { return styles; }
     public void setStyles(Set<YogaStyle> styles) { this.styles = styles; }
+
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }

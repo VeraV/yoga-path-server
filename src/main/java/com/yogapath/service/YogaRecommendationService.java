@@ -46,6 +46,13 @@ public class YogaRecommendationService {
         // Allocate time based on goals
         allocateMinutes(recommendation, profile, minutesPerSession);
 
+        // If philosophy openness is OPEN, boost meditation/mantra and add note
+        if (profile.getPhilosophyOpenness() == PhilosophyOpenness.OPEN) {
+            recommendation.setMeditationMinutes(recommendation.getMeditationMinutes() + 5);
+            recommendation.setMantraMinutes(recommendation.getMantraMinutes() + 5);
+            recommendation.setNotes("Consider studying Yoga Sutra and/or Vedanta Philosophy.");
+        }
+
         // Determine yoga styles based on preferences
         Set<YogaStyle> styles = determineStyles(profile);
         recommendation.setStyles(styles);
@@ -130,56 +137,34 @@ public class YogaRecommendationService {
 
     private Set<YogaStyle> determineStyles(YogaProfile profile) {
         List<YogaStyle> allStyles = styleRepository.findAll();
-        Set<YogaStyle> recommended = new HashSet<>();
 
         DynamicPreference dynamic = profile.getDynamicPreference();
         StructurePreference structure = profile.getStructurePreference();
         PhilosophyOpenness philosophy = profile.getPhilosophyOpenness();
 
-        for (YogaStyle style : allStyles) {
-            String name = style.getName();
+        // Start with all styles, then filter
+        Set<YogaStyle> recommended = new HashSet<>(allStyles);
 
-            // DYNAMIC + STRUCTURED -> Ashtanga
-            if (name.equals("Ashtanga")) {
-                if ((dynamic == DynamicPreference.DYNAMIC || dynamic == DynamicPreference.NO_PREFERENCE) &&
-                    (structure == StructurePreference.STRUCTURED || structure == StructurePreference.NO_PREFERENCE)) {
-                    recommended.add(style);
-                }
-            }
-
-            // STATIC + STRUCTURED -> Sivananda, Iyengar
-            if (name.equals("Sivananda") || name.equals("Iyengar")) {
-                if ((dynamic == DynamicPreference.STATIC || dynamic == DynamicPreference.NO_PREFERENCE) &&
-                    (structure == StructurePreference.STRUCTURED || structure == StructurePreference.NO_PREFERENCE)) {
-                    recommended.add(style);
-                }
-            }
-
-            // STATIC + STRUCTURED + OPEN -> Kundalini
-            if (name.equals("Kundalini")) {
-                if ((dynamic == DynamicPreference.STATIC || dynamic == DynamicPreference.NO_PREFERENCE) &&
-                    (structure == StructurePreference.STRUCTURED || structure == StructurePreference.NO_PREFERENCE) &&
-                    (philosophy == PhilosophyOpenness.OPEN || philosophy == PhilosophyOpenness.NO_PREFERENCE)) {
-                    recommended.add(style);
-                }
-            }
-
-            // DYNAMIC + CREATIVE -> Vinyasa
-            if (name.equals("Vinyasa")) {
-                if ((dynamic == DynamicPreference.DYNAMIC || dynamic == DynamicPreference.NO_PREFERENCE) &&
-                    (structure == StructurePreference.CREATIVE || structure == StructurePreference.NO_PREFERENCE)) {
-                    recommended.add(style);
-                }
-            }
-
-            // STATIC + CREATIVE -> Yin, Hatha
-            if (name.equals("Yin") || name.equals("Hatha")) {
-                if ((dynamic == DynamicPreference.STATIC || dynamic == DynamicPreference.NO_PREFERENCE) &&
-                    (structure == StructurePreference.CREATIVE || structure == StructurePreference.NO_PREFERENCE)) {
-                    recommended.add(style);
-                }
-            }
+        // Filter by STRUCTURE preference (skip if NO_PREFERENCE)
+        if (structure == StructurePreference.STRUCTURED) {
+            recommended.removeIf(style -> !style.isStructured());
+        } else if (structure == StructurePreference.CREATIVE) {
+            recommended.removeIf(style -> !style.isCreative());
         }
+
+        // Filter by DYNAMIC preference (skip if NO_PREFERENCE)
+        if (dynamic == DynamicPreference.DYNAMIC) {
+            recommended.removeIf(style -> !style.isDynamic());
+        } else if (dynamic == DynamicPreference.STATIC) {
+            recommended.removeIf(style -> !style.isStatik());
+        }
+
+        // Filter by PHILOSOPHY preference
+        // NOT_OPEN: exclude styles that require philosophy openness (Kundalini)
+        if (philosophy == PhilosophyOpenness.NOT_OPEN) {
+            recommended.removeIf(YogaStyle::isRequiresPhilosophyOpenness);
+        }
+        // OPEN and NO_PREFERENCE: keep all styles (no filtering needed)
 
         return recommended;
     }
@@ -199,6 +184,7 @@ public class YogaRecommendationService {
         response.setTotalMinutesPerSession(total);
 
         response.setStyles(rec.getStyles());
+        response.setNotes(rec.getNotes());
         response.setIsOutdated(isOutdated);
         response.setCreatedAt(rec.getCreatedAt());
         return response;
