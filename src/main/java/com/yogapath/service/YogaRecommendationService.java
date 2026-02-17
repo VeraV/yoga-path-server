@@ -43,15 +43,8 @@ public class YogaRecommendationService {
         // Calculate minutes per session
         int minutesPerSession = profile.getWeeklyMinutesAvailable() / profile.getSessionsPerWeek();
 
-        // Allocate time based on goals
+        // Allocate time based on goals (also sets notes if philosophy goal selected)
         allocateMinutes(recommendation, profile, minutesPerSession);
-
-        // If philosophy openness is OPEN, boost meditation/mantra and add note
-        if (profile.getPhilosophyOpenness() == PhilosophyOpenness.OPEN) {
-            recommendation.setMeditationMinutes(recommendation.getMeditationMinutes() + 5);
-            recommendation.setMantraMinutes(recommendation.getMantraMinutes() + 5);
-            recommendation.setNotes("Consider studying Yoga Sutra and/or Vedanta Philosophy.");
-        }
 
         // Determine yoga styles based on preferences
         Set<YogaStyle> styles = determineStyles(profile);
@@ -115,6 +108,7 @@ public class YogaRecommendationService {
         if (goalNames.contains("Interested in Philosophy")) {
             mantra += 10;
             meditation += 5;
+            rec.setNotes("Consider studying Yoga Sutra and/or Vedanta Philosophy.");
         }
 
         // Scale to fit available time

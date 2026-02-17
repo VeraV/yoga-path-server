@@ -25,7 +25,7 @@ public class AuthService {
         this.jwtUtil = jwtUtil;
     }
 
-    public UserResponse register(UserRequest request) {
+    public LoginResponse register(UserRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new RuntimeException("Email already exists: " + request.getEmail());
         }
@@ -38,13 +38,10 @@ public class AuthService {
 
         User saved = userRepository.save(user);
 
-        return new UserResponse(
-                saved.getId(),
-                saved.getName(),
-                saved.getEmail(),
-                saved.getEnabled(),
-                saved.getCreatedAt()
-        );
+        // Generate token for auto-login after registration
+        String token = jwtUtil.generateToken(saved.getEmail(), saved.getId());
+
+        return new LoginResponse(token, saved.getId(), saved.getEmail(), saved.getName());
     }
 
     public LoginResponse login(LoginRequest request) {
