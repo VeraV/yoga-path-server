@@ -16,6 +16,6 @@ public class LimitationService {
     }
 
     public List<Limitation> getAllLimitations() {
-        return limitationRepository.findAll();
+        return limitationRepository.findAllByOrderByNameAsc();
     }
 }
