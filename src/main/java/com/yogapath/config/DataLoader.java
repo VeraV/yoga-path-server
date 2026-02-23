@@ -50,29 +50,33 @@ public class DataLoader implements CommandLineRunner {
         ashtanga.setDynamic(true);
         ashtanga.setStatik(false);
         ashtanga.setRequiresPhilosophyOpenness(false);
+        ashtanga.setSortOrder(1);
         yogaStyleRepository.save(ashtanga);
 
         // Sivananda: STRUCTURED, DYNAMIC & STATIC
         YogaStyle sivananda = new YogaStyle();
         sivananda.setName("Sivananda");
         sivananda.setDescription("Classical approach based on a fixed sequence, including vinyasa, 12 basic asanas, pranayama, and relaxation");
-        ashtanga.setNotes("Traditionally includes kirtan, meditation, and study of yoga philosophy with regular chanting and meditation");
+        sivananda.setNotes("Traditionally includes kirtan, meditation, and study of yoga philosophy with regular chanting and meditation");
         sivananda.setStructured(true);
         sivananda.setCreative(false);
         sivananda.setDynamic(true);
         sivananda.setStatik(true);
         sivananda.setRequiresPhilosophyOpenness(false);
+        sivananda.setSortOrder(2);
         yogaStyleRepository.save(sivananda);
 
         // Kundalini: STRUCTURED, DYNAMIC, requires philosophy openness
         YogaStyle kundalini = new YogaStyle();
         kundalini.setName("Kundalini");
         kundalini.setDescription("Combines movement, breathing, meditation, and chanting to awaken energy.");
+        kundalini.setNotes("Strong spiritual orientation with regular chanting and meditation.");
         kundalini.setStructured(true);
         kundalini.setCreative(false);
         kundalini.setDynamic(true);
         kundalini.setStatik(false);
         kundalini.setRequiresPhilosophyOpenness(true);
+        kundalini.setSortOrder(3);
         yogaStyleRepository.save(kundalini);
 
         // Iyengar: STRUCTURED, STATIC
@@ -85,6 +89,7 @@ public class DataLoader implements CommandLineRunner {
         iyengar.setDynamic(false);
         iyengar.setStatik(true);
         iyengar.setRequiresPhilosophyOpenness(false);
+        iyengar.setSortOrder(4);
         yogaStyleRepository.save(iyengar);
 
         // Vinyasa: CREATIVE, DYNAMIC
@@ -96,6 +101,7 @@ public class DataLoader implements CommandLineRunner {
         vinyasa.setDynamic(true);
         vinyasa.setStatik(false);
         vinyasa.setRequiresPhilosophyOpenness(false);
+        vinyasa.setSortOrder(5);
         yogaStyleRepository.save(vinyasa);
 
         // Hatha: CREATIVE, STATIC
@@ -107,6 +113,7 @@ public class DataLoader implements CommandLineRunner {
         hatha.setDynamic(false);
         hatha.setStatik(true);
         hatha.setRequiresPhilosophyOpenness(false);
+        hatha.setSortOrder(7);
         yogaStyleRepository.save(hatha);
 
         // Yin: STRUCTURED & CREATIVE, STATIC
@@ -119,6 +126,7 @@ public class DataLoader implements CommandLineRunner {
         yin.setDynamic(false);
         yin.setStatik(true);
         yin.setRequiresPhilosophyOpenness(false);
+        yin.setSortOrder(6);
         yogaStyleRepository.save(yin);
     }
 
@@ -230,7 +238,7 @@ public class DataLoader implements CommandLineRunner {
         Goal stressRelief = new Goal();
         stressRelief.setName("Stress Relief");
         stressRelief.setDescription("Reduce anxiety and tension");
-        stressRelief.setNotes("Include pranayama (breathing techniques), follow physical practice with deep relaxation or yoga nidra, and incorporate guided meditation into your routine.");
+        stressRelief.setNotes("Try yoga nidra, and incorporate guided meditation into your routine.");
         goalRepository.save(stressRelief);
 
         Goal betterSleep = new Goal();
@@ -242,7 +250,7 @@ public class DataLoader implements CommandLineRunner {
         Goal mentalFocus = new Goal();
         mentalFocus.setName("Mental Focus");
         mentalFocus.setDescription("Improve concentration");
-        mentalFocus.setNotes("Add pranayama and yogic meditation, include balance postures in your practice, and — if appropriate — work toward headstand. Support your focus with good sleep, reduced sugar intake, and concentration techniques such as Pomodoro, time-blocking, or intentional focus rituals.");
+        mentalFocus.setNotes("Include balance postures in your practice, and — if appropriate — work toward headstand. Support your focus with good sleep, reduced sugar intake, and concentration techniques such as Pomodoro, time-blocking, or intentional focus rituals.");
         goalRepository.save(mentalFocus);
 
         Goal flexibility = new Goal();
@@ -254,7 +262,7 @@ public class DataLoader implements CommandLineRunner {
         Goal philosophy = new Goal();
         philosophy.setName("Interested in Philosophy");
         philosophy.setDescription("Explore yoga philosophy");
-        philosophy.setNotes("Engage in reflective inquiry into key philosophical concepts, meditate on these ideas, and explore mantra chanting as a contemplative practice.");
+        philosophy.setNotes("Study classical yoga texts such as the Yoga Sutras, the Bhagavad Gita, or Tattvabodha. Reflect on key concepts, meditate on their meaning, and understand the mantras you chant.");
         goalRepository.save(philosophy);
     }
 }

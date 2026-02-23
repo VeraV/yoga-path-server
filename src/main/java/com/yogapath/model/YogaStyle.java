@@ -34,6 +34,9 @@ public class YogaStyle {
     @Column(name = "requires_philosophy_openness")
     private boolean requiresPhilosophyOpenness;
 
+    @Column(name = "sort_order")
+    private int sortOrder;
+
     public YogaStyle() {}
 
     public YogaStyle(Long id, String name, String description, String notes) {
@@ -71,4 +74,7 @@ public class YogaStyle {
     public void setRequiresPhilosophyOpenness(boolean requiresPhilosophyOpenness) {
         this.requiresPhilosophyOpenness = requiresPhilosophyOpenness;
     }
+
+    public int getSortOrder() { return sortOrder; }
+    public void setSortOrder(int sortOrder) { this.sortOrder = sortOrder; }
 }

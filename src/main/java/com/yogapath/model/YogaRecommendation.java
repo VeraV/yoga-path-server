@@ -5,8 +5,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "yoga_recommendations")
@@ -41,10 +41,8 @@ public class YogaRecommendation {
         joinColumns = @JoinColumn(name = "recommendation_id"),
         inverseJoinColumns = @JoinColumn(name = "style_id")
     )
-    private Set<YogaStyle> styles = new HashSet<>();
-
-    @Column(columnDefinition = "TEXT")
-    private String notes;
+    @OrderBy("sortOrder ASC")
+    private List<YogaStyle> styles = new ArrayList<>();
 
     @CreationTimestamp
     @Column(updatable = false)
@@ -76,11 +74,8 @@ public class YogaRecommendation {
     public Integer getMantraMinutes() { return mantraMinutes; }
     public void setMantraMinutes(Integer mantraMinutes) { this.mantraMinutes = mantraMinutes; }
 
-    public Set<YogaStyle> getStyles() { return styles; }
-    public void setStyles(Set<YogaStyle> styles) { this.styles = styles; }
-
-    public String getNotes() { return notes; }
-    public void setNotes(String notes) { this.notes = notes; }
+    public List<YogaStyle> getStyles() { return styles; }
+    public void setStyles(List<YogaStyle> styles) { this.styles = styles; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
