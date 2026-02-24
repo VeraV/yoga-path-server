@@ -84,39 +84,27 @@ public class YogaRecommendationService {
                 .map(Goal::getName)
                 .collect(Collectors.toSet());
 
-        boolean longSession = minutesPerSession >= 30;
+        boolean hasStressRelief = goalNames.contains("Stress Relief");
+        boolean hasBetterSleep = goalNames.contains("Better Sleep");
+        boolean hasMentalFocus = goalNames.contains("Mental Focus");
+        boolean hasPhilosophy = goalNames.contains("Interested in Philosophy");
 
-        // Base minimums (session-length dependent)
-        int asana = longSession ? 15 : 10;
-        int pranayama = longSession ? 5 : 3;
-        int relaxation = longSession ? 5 : 3;
-        int meditation = 0;
-        int mantra = 0;
+        // Try preferred (≥30 min) minimums first, fall back to smaller if they don't fit
+        int[] preferred = buildMinimums(true, hasStressRelief, hasBetterSleep, hasMentalFocus, hasPhilosophy);
+        int[] fallback = buildMinimums(false, hasStressRelief, hasBetterSleep, hasMentalFocus, hasPhilosophy);
+        int[] chosen = (sum(preferred) <= minutesPerSession) ? preferred : fallback;
 
-        // Goal adjustments — each +5 applied once regardless of how many goals trigger it
-        if (goalNames.contains("Stress Relief") || goalNames.contains("Mental Focus")) {
-            pranayama += 5;
-        }
-        if (goalNames.contains("Stress Relief") || goalNames.contains("Better Sleep")) {
-            relaxation += 5;
-        }
-        if (goalNames.contains("Mental Focus") || goalNames.contains("Interested in Philosophy")) {
-            meditation = 5;
-        }
-        if (goalNames.contains("Interested in Philosophy")) {
-            mantra = 5;
-        }
+        int asana = chosen[0], pranayama = chosen[1], relaxation = chosen[2],
+                meditation = chosen[3], mantra = chosen[4];
 
-        int total = asana + pranayama + relaxation + meditation + mantra;
+        int total = sum(chosen);
         int remaining = minutesPerSession - total;
 
         if (remaining <= 0) {
             // Minimums exceed session time — use as-is, client will show warning
         } else if (remaining <= 5) {
-            // Small remainder goes entirely to asana
             asana += remaining;
         } else {
-            // Scale all components proportionally to fill the session
             double scale = (double) minutesPerSession / total;
             asana = (int) (asana * scale);
             pranayama = (int) (pranayama * scale);
@@ -124,8 +112,7 @@ public class YogaRecommendationService {
             meditation = (int) (meditation * scale);
             mantra = (int) (mantra * scale);
             // Add rounding remainder to asana to ensure exact total
-            int scaledTotal = asana + pranayama + relaxation + meditation + mantra;
-            asana += minutesPerSession - scaledTotal;
+            asana += minutesPerSession - (asana + pranayama + relaxation + meditation + mantra);
         }
 
         rec.setAsanaMinutes(asana);
@@ -133,6 +120,29 @@ public class YogaRecommendationService {
         rec.setRelaxationMinutes(relaxation);
         rec.setMeditationMinutes(meditation);
         rec.setMantraMinutes(mantra);
+    }
+
+    private int[] buildMinimums(boolean longSession,
+                                boolean hasStressRelief, boolean hasBetterSleep,
+                                boolean hasMentalFocus, boolean hasPhilosophy) {
+        int asana      = longSession ? 15 : 10;
+        int pranayama  = longSession ? 5  : 3;
+        int relaxation = longSession ? 5  : 3;
+        int meditation = 0;
+        int mantra     = 0;
+
+        if (hasStressRelief || hasMentalFocus)  pranayama  += 5;
+        if (hasStressRelief || hasBetterSleep)  relaxation += 5;
+        if (hasMentalFocus  || hasPhilosophy)   meditation  = 5;
+        if (hasPhilosophy)                      mantra      = 5;
+
+        return new int[]{asana, pranayama, relaxation, meditation, mantra};
+    }
+
+    private int sum(int[] arr) {
+        int total = 0;
+        for (int v : arr) total += v;
+        return total;
     }
 
     private List<YogaStyle> determineStyles(YogaProfile profile) {
