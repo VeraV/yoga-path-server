@@ -1,0 +1,9 @@
+target/
+.git/
+.env
+.env.local
+*.md
+.idea/
+*.iml
+.vscode/
+src/main/resources/application-dev.properties
