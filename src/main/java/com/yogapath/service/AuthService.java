@@ -6,7 +6,7 @@ import com.yogapath.dto.UserRequest;
 import com.yogapath.dto.UserResponse;
 import com.yogapath.model.User;
 import com.yogapath.repository.UserRepository;
-import com.yogapath.security.JwtUtil;
+import com.yogapath.security.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +15,14 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final TokenService tokenService;
 
     public AuthService(UserRepository userRepository,
                        PasswordEncoder passwordEncoder,
-                       JwtUtil jwtUtil) {
+                       TokenService tokenService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
+        this.tokenService = tokenService;
     }
 
     public LoginResponse register(UserRequest request) {
@@ -39,7 +39,7 @@ public class AuthService {
         User saved = userRepository.save(user);
 
         // Generate token for auto-login after registration
-        String token = jwtUtil.generateToken(saved.getEmail(), saved.getId());
+        String token = tokenService.generateToken(saved.getEmail(), saved.getId());
 
         return new LoginResponse(token, saved.getId(), saved.getEmail(), saved.getName());
     }
@@ -56,7 +56,7 @@ public class AuthService {
             throw new RuntimeException("Account is disabled");
         }
 
-        String token = jwtUtil.generateToken(user.getEmail(), user.getId());
+        String token = tokenService.generateToken(user.getEmail(), user.getId());
 
         return new LoginResponse(token, user.getId(), user.getEmail(), user.getName());
     }
