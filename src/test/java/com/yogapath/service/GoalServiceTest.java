@@ -38,7 +38,7 @@ class GoalServiceTest {
 
         List<Goal> result = goalService.getAllGoals();
 
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(999);
         assertThat(result).containsExactly(goal1, goal2);
     }
 
